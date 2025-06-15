@@ -1,0 +1,44 @@
+.chart_canvas_container{
+    padding:30px;
+}
+.chart_container {
+    width: 100%;
+    margin: 100px;
+    border: 1px solid #80808030;
+}
+
+.chart_description {
+    padding:10px 0;
+    color: white;
+    text-align: left;
+    background: #101828;
+    font-size: 0.8rem;
+
+}
+
+.chart_header {
+    font-family: 'Montserrat', sans-serif;
+
+    background: #101828;
+    padding: 10px 15px;
+}
+.chart_header_title{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.chart_title {
+    font-size:1.6rem;
+    color: white;
+}
+
+.chart_body {
+    margin: 10px;
+}
+
+.csv-icon {
+    font-size: 32px;
+    font-family: 'Material Symbols Outlined', serif;
+    cursor: pointer;
+}
+

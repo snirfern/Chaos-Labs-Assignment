@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  clickhouse:
+    image: clickhouse/clickhouse-server:latest
+    container_name: clickhouse-prod
+    ports:
+      - "8123:8123"
+      - "9000:9000"
+    volumes:
+      - ../seed.sql:/docker-entrypoint-initdb.d/1_seed.sql:ro
+    environment:
+      CLICKHOUSE_USER: produser
+      CLICKHOUSE_PASSWORD: prodpassword
+    networks:
+      - app-net
+
+  frontend:
+    build:
+      context: ../../frontend
+      dockerfile: Dockerfile
+    container_name: frontend-prod
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    networks:
+      - app-net
+
+  backend:
+    build:
+      context: ../../backend
+      dockerfile: Dockerfile
+    container_name: backend-prod
+    ports:
+      - "4000:4000"
+    environment:
+      - NODE_ENV=prod
+    networks:
+      - app-net
+
+networks:
+  app-net:
+    driver: bridge

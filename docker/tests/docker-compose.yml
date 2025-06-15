@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  clickhouse:
+    image: clickhouse/clickhouse-server:latest
+    container_name: clickhouse-tests
+    ports:
+      - "8123:8123"
+      - "9000:9000"
+    volumes:
+      - ../seed.sql:/docker-entrypoint-initdb.d/1_seed.sql:ro
+    environment:
+      CLICKHOUSE_USER: testuser
+      CLICKHOUSE_PASSWORD: testpassword
+    networks:
+      - app-net
+
+
+  test-service:
+    build:
+      context: ../../backend
+      dockerfile: Dockerfile
+    container_name: tests-service
+    ports:
+      - "4000:4000"
+    environment:
+      - NODE_ENV=tests
+    networks:
+      - app-net
+    volumes:
+      - ./test-results:/usr/src/app/test-results
+    command: [ "npm", "run", "test" ]
+
+networks:
+  app-net:
+    driver: bridge
