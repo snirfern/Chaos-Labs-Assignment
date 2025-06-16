@@ -15,45 +15,34 @@ export class DeFiRepository {
     }
 
     async getDeFiMetrics(): Promise<IDeFiMetrics[]> {
-        const raw = await this.deFiDal.getDeFiMetrics();
-        if (!Array.isArray(raw)) {
+        const res = await this.deFiDal.getDeFiMetrics();
+        if (!res) {
             throw new GetDeFiMetricsError();
         }
-        return raw;
+        return res;
     }
 
     async getTVLOverTime(): Promise<TVLOverTime[]> {
-        const raw = await this.deFiDal.queryTVLOverTime();
-        if (!Array.isArray(raw)) {
+        const res = await this.deFiDal.queryTVLOverTime();
+        if (!res) {
             throw new TVLOverTimeError();
         }
-        return raw.map(row => ({
-            day: row.day,
-            total_tvl: Number(row.total_tvl),
-        }));
+        return res;
     }
 
     async getDailyVolumeByProtocol(): Promise<DailyVolumeByProtocol[]> {
-        const raw = await this.deFiDal.queryDailyVolumeByProtocol();
-        if (!Array.isArray(raw)) {
+        const res = await this.deFiDal.queryDailyVolumeByProtocol();
+        if (!res) {
             throw new DailyVolumeByProtocolError();
         }
-        return raw.map(row => ({
-            day: row.day,
-            protocol: row.protocol,
-            total_volume: Number(row.total_volume),
-        }));
+        return res;
     }
 
     async getActiveUsersByChain(): Promise<ActiveUsersByChain[]> {
-        const raw = await this.deFiDal.queryActiveUsersByChain();
-        if (!Array.isArray(raw)) {
+        const res = await this.deFiDal.queryActiveUsersByChain();
+        if (!res) {
             throw new ActiveUsersByChainError();
         }
-        return raw.map(row => ({
-            day: row.day,
-            chain: row.chain,
-            total_active_users: Number(row.total_active_users),
-        }));
+        return res;
     }
 }

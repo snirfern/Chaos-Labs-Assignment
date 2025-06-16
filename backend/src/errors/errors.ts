@@ -42,3 +42,18 @@ export class ActiveUsersByChainError extends AppError {
         super(message, HttpStatusCode.INTERNAL_SERVER);
     }
 }
+
+export const customErrorFormat = (error: any) => {
+    const code = error.extensions?.code || 'INTERNAL_SERVER_ERROR';
+    const status = error.extensions?.status || error.statusCode || 500;
+    const message = error.message || 'INTERNAL_SERVER_ERROR';
+    const stack = error.extensions?.stacktrace?.join('\n');
+
+    logger.error(`GraphQL Error: ${message}\nCode: ${code}\nStatus: ${status}\nStack:\n${stack || 'N/A'}`);
+
+    return {
+        message,
+        code,
+        status,
+    };
+};

@@ -1,4 +1,4 @@
-import express, {NextFunction, Request, Response} from 'express';
+import express from 'express';
 import {ApolloServer} from '@apollo/server';
 import bodyParser from 'body-parser';
 import cors from 'cors';
@@ -6,17 +6,16 @@ import {typeDefs} from './controllers/schema';
 import resolvers from './controllers/Resolvers/resolvers';
 import clickHouseDb from './framework/db/clickHouse';
 import {runWithRetry} from './utils/utils';
-import logger from "./utils/logger/logger";
-import {AppError} from "./errors/errors";
-import {expressMiddleware} from "@apollo/server/express4";
-
+import {expressMiddleware} from '@apollo/server/express4';
+import {customErrorFormat} from "./errors/errors";
 
 async function initApp(): Promise<express.Express> {
     const app = express();
 
     const server = new ApolloServer({
         typeDefs,
-        resolvers
+        resolvers,
+        formatError: customErrorFormat
     });
 
     await server.start();
@@ -27,16 +26,6 @@ async function initApp(): Promise<express.Express> {
         bodyParser.json(),
         expressMiddleware(server)
     );
-
-    app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-        logger.error(`Unhandled error: ${err.message}\nStack: ${err.stack}`);
-
-        if (err instanceof AppError) {
-            return res.status(err.statusCode).json({error: err.message});
-        }
-
-        res.status(500).json({error: 'Internal Server Error'});
-    });
 
     await runWithRetry(() => clickHouseDb.connect());
 

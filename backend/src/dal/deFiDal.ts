@@ -1,6 +1,11 @@
 import clickHouseDb from "../framework/db/clickHouse";
 import {NodeClickHouseClient} from "@clickhouse/client/dist/client";
 import {DeFiQueries} from "./queries";
+import {ActiveUsersByChain, DailyVolumeByProtocol, IDeFiMetrics, TVLOverTime} from "../models/interface";
+
+enum ClickHouseFormat {
+    JSONEachRow = "JSONEachRow",
+}
 
 export class DeFiDal {
     private client: NodeClickHouseClient;
@@ -9,35 +14,35 @@ export class DeFiDal {
         this.client = clickHouseDb.getClient();
     }
 
-    async getDeFiMetrics(): Promise<any> {
+    async getDeFiMetrics(): Promise<IDeFiMetrics[]> {
         const resultSet = await this.client.query({
             query: DeFiQueries.GetDeFiMetrics,
-            format: "JSONEachRow",
+            format: ClickHouseFormat.JSONEachRow,
         });
-        return resultSet.json<any[]>();
+        return resultSet.json();
     }
 
-    async queryTVLOverTime(): Promise<any[]> {
+    async queryTVLOverTime(): Promise<TVLOverTime[]> {
         const resultSet = await this.client.query({
             query: DeFiQueries.TVLOverTime,
-            format: "JSONEachRow",
+            format: ClickHouseFormat.JSONEachRow,
         });
-        return resultSet.json<any[]>();
+        return resultSet.json();
     }
 
-    async queryDailyVolumeByProtocol(): Promise<any[]> {
+    async queryDailyVolumeByProtocol(): Promise<DailyVolumeByProtocol[]> {
         const resultSet = await this.client.query({
             query: DeFiQueries.DailyVolumeByProtocol,
-            format: "JSONEachRow",
+            format: ClickHouseFormat.JSONEachRow,
         });
-        return resultSet.json<any[]>();
+        return resultSet.json();
     }
 
-    async queryActiveUsersByChain(): Promise<any[]> {
+    async queryActiveUsersByChain(): Promise<ActiveUsersByChain[]> {
         const resultSet = await this.client.query({
             query: DeFiQueries.ActiveUsersByChain,
-            format: "JSONEachRow",
+            format: ClickHouseFormat.JSONEachRow,
         });
-        return resultSet.json<any[]>();
+        return resultSet.json();
     }
 }
