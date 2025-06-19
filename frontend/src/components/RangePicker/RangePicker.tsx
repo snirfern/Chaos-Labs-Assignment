@@ -38,7 +38,10 @@ function CustomDatePicker({component_id, disabled}: DatePickerPropTypes) {
     const [isCalendarOpen, setIsCalenderOpen] = useState<boolean>(false);
     const containerRef = useRef<HTMLDivElement>(null);
 
-    const handleDateChange = ([from, to]: [Date | null, Date | null]) => {
+    const handleDateChange = async ([from, to]: [Date | null, Date | null]) => {
+        if (from && to)
+            await chartController.fetchActiveUsersByChain(from, to)
+
         setDateRange((prev) => {
             const newRange = {from, to};
             if (from && to) {
@@ -47,6 +50,7 @@ function CustomDatePicker({component_id, disabled}: DatePickerPropTypes) {
             }
             return newRange;
         });
+
     };
 
 

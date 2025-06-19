@@ -9,27 +9,27 @@ export class ChartController {
         void this.init()
     }
 
-    async fetchActiveUsersByChain() {
+    async fetchActiveUsersByChain(from?:Date,to?:Date) {
         try {
-            const data = await this.repository.getActiveUsersByChain();
+            const data = await this.repository.getActiveUsersByChain(from,to);
             this.chartStore.setActiveUsersByChain(data);
         } catch (err) {
             this.chartStore.setError((err as Error)?.message ?? 'Unknown error');
         }
     }
 
-    async fetchDailyVolumeByProtocol() {
+    async fetchDailyVolumeByProtocol(from?:Date,to?:Date) {
         try {
-            const data = await this.repository.getDailyVolumeByProtocol();
+            const data = await this.repository.getDailyVolumeByProtocol(from,to);
             this.chartStore.setDailyVolumeByProtocol(data);
         } catch (err) {
             this.chartStore.setError((err as Error)?.message ?? 'Unknown error');
         }
     }
 
-    async fetchTVLOverTime() {
+    async fetchTVLOverTime(from?:Date,to?:Date) {
         try {
-            const data = await this.repository.getTVLOverTime();
+            const data = await this.repository.getTVLOverTime(from,to);
             this.chartStore.setTVLOverTime(data);
         } catch (err) {
             this.chartStore.setError((err as Error)?.message ?? 'Unknown error');

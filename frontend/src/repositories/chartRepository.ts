@@ -9,28 +9,31 @@ export class ChartRepository {
         this.client = client;
     }
 
-    async getActiveUsersByChain(): Promise<ActiveUsersByChain[]> {
+    async getActiveUsersByChain(from?: Date, to?: Date): Promise<ActiveUsersByChain[]> {
         const {data} = await this.client.query<{ getActiveUsersByChain: ActiveUsersByChain[] }>({
             query: GET_ACTIVE_USERS_BY_CHAIN,
-            fetchPolicy: 'network-only',
+            fetchPolicy: 'cache-first',
+            variables: {from: from?.toISOString(), to: to?.toISOString()}
         });
 
         return data.getActiveUsersByChain;
     }
 
-    async getDailyVolumeByProtocol(): Promise<DailyVolumeByProtocol[]> {
+    async getDailyVolumeByProtocol(from?: Date, to?: Date): Promise<DailyVolumeByProtocol[]> {
         const {data} = await this.client.query<{ getDailyVolumeByProtocol: DailyVolumeByProtocol[] }>({
             query: GET_DAILY_VOLUME_BY_PROTOCOL,
-            fetchPolicy: 'network-only',
+            fetchPolicy: 'cache-first',
+            variables: {from: from?.toISOString(), to: to?.toISOString()}
         });
 
         return data.getDailyVolumeByProtocol;
     }
 
-    async getTVLOverTime(): Promise<TVLOverTime[]> {
+    async getTVLOverTime(from?: Date, to?: Date): Promise<TVLOverTime[]> {
         const {data} = await this.client.query<{ getTVLOverTime: TVLOverTime[] }>({
             query: GET_TVL_OVER_TIME,
-            fetchPolicy: 'network-only',
+            fetchPolicy: 'cache-first',
+            variables: {from: from?.toISOString(), to: to?.toISOString()}
         });
 
         return data.getTVLOverTime;

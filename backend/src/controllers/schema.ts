@@ -1,6 +1,8 @@
 import { gql } from 'graphql-tag';
 
 export const typeDefs = gql`
+  scalar DateTime
+
   type DeFi {
     timestamp: String!
     protocol: String!
@@ -30,9 +32,9 @@ export const typeDefs = gql`
 
   type Query {
     getDeFiMetrics: [DeFi!]!
-    getTVLOverTime: [TVLOverTime!]!
-    getDailyVolumeByProtocol: [DailyVolumeByProtocol!]!
-    getActiveUsersByChain: [ActiveUsersByChain!]!
+    getTVLOverTime(from: DateTime, to: DateTime): [TVLOverTime!]!
+    getDailyVolumeByProtocol(from: DateTime, to: DateTime): [DailyVolumeByProtocol!]!
+    getActiveUsersByChain(from: DateTime, to: DateTime): [ActiveUsersByChain!]!
   }
 
   type Mutation {

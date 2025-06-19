@@ -8,15 +8,19 @@ export const queryResolvers = {
         return await deFiService.getMetrics();
     },
 
-    getTVLOverTime: async () => {
+    getTVLOverTime: async (variables:Record<string, string>) => {
+        const {from,to}=variables
+
         return await deFiService.getTVLOverTime();
     },
 
-    getDailyVolumeByProtocol: async () => {
+    getDailyVolumeByProtocol: async (variables:Record<string, string>) => {
+        const {from,to}=variables
         return await deFiService.getDailyVolumeByProtocol();
     },
 
-    getActiveUsersByChain: async () => {
+    getActiveUsersByChain: async (variables:Record<string, string>) => {
+        const {from,to}=variables
         return await deFiService.getActiveUsersByChain();
     },
 };
