@@ -38,7 +38,7 @@ export class ChartController {
 
     async init() {
         this.chartStore.setLoading(true)
-        await Promise.all([
+        await Promise.allSettled([
             this.fetchActiveUsersByChain(),
             this.fetchDailyVolumeByProtocol(),
             this.fetchTVLOverTime(),
